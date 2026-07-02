@@ -1,0 +1,36 @@
+# bridge 端(拨号方，常在 NAT 后)示例配置 —— 复制为 /etc/sdn-tunnel/tunnel.conf
+# 与 portal.conf.example 配对；两端 UUID / 端口 / TRANSPORT 必须一致。
+ROLE=bridge
+TRANSPORT=vmess
+UUID=REPLACE-WITH-UUID                # 与 portal 相同
+
+PEER_DIAL_ADDR=portal.example.com     # 要拨的地址：portal 可达地址，或中继前端(域名/IPv6/IPv4)
+PEER_DIAL_PORT=21122                  # = portal 的 LISTEN_PORT(经中继则填中继端口)
+
+# REALITY(仅 TRANSPORT=reality 时)
+REALITY_SNI=www.microsoft.com
+REALITY_DEST=www.microsoft.com:443
+REALITY_SHORTID=8f
+REALITY_FINGERPRINT=chrome
+REALITY_PUBLIC_KEY=                   # bridge 填公钥(= portal 私钥对应的 PublicKey)
+REALITY_PRIVATE_KEY=
+
+# L3 底层(两端对称同值)
+TUN_LOCAL_IP=10.0.100.2/30
+TUN_PEER_IP=10.0.100.1
+FOU_ENCAP_PORT=40000
+FOU_DECAP_PORT=40001
+TUN_MTU=1400
+
+# BGP
+LOCAL_ASN=65002
+PEER_ASN=65001
+ROUTER_ID=10.0.100.2
+LAN_PREFIX=172.19.2.0/24
+DUMMY_IP=172.19.2.1/24
+DUMMY_IF=dummy0
+
+WAN_IF=
+PEER_SSH=                             # 可选 push：root@portal-host
+PEER_SSH_PORT=22
+PEER_TEST_IP=172.19.1.1

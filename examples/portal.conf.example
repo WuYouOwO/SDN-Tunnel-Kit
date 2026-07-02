@@ -1,0 +1,35 @@
+# portal 端(监听方，可被访问)示例配置 —— 复制为 /etc/sdn-tunnel/tunnel.conf
+# 与 bridge.conf.example 配对；两端 UUID / 端口 / TRANSPORT 必须一致。
+ROLE=portal
+TRANSPORT=vmess                       # vmess(推荐,穿中继) | vless(明文) | reality(需干净TLS)
+UUID=REPLACE-WITH-UUID                # 用 `sdn-tunnel.sh keys` 生成，两端相同
+
+LISTEN_PORT=21122                     # 本机监听端口(对端拨这个)
+
+# REALITY(仅 TRANSPORT=reality 时)
+REALITY_SNI=www.microsoft.com
+REALITY_DEST=www.microsoft.com:443
+REALITY_SHORTID=8f
+REALITY_FINGERPRINT=chrome
+REALITY_PUBLIC_KEY=
+REALITY_PRIVATE_KEY=                  # portal 填私钥(keys 生成的 PrivateKey)
+
+# L3 底层(两端对称同值)
+TUN_LOCAL_IP=10.0.100.1/30
+TUN_PEER_IP=10.0.100.2
+FOU_ENCAP_PORT=40000
+FOU_DECAP_PORT=40001
+TUN_MTU=1400
+
+# BGP
+LOCAL_ASN=65001
+PEER_ASN=65002
+ROUTER_ID=10.0.100.1
+LAN_PREFIX=172.19.1.0/24
+DUMMY_IP=172.19.1.1/24
+DUMMY_IF=dummy0
+
+WAN_IF=                               # 留空自动探测(策略出口 NAT 用)
+PEER_SSH=                             # 可选 push：root@bridge-host
+PEER_SSH_PORT=22
+PEER_TEST_IP=172.19.2.1               # 对端 LAN 一个可 ping 的地址(诊断用)
